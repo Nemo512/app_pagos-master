@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "169637903534",
+    "project_id": "apppagos-b24a3",
+    "storage_bucket": "apppagos-b24a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169637903534:android:cd9716ab162eff7197813f",
+        "android_client_info": {
+          "package_name": "com.iqinnver.appagos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169637903534-obo9agq58t523pbnrlmc6ei0l9rrfhmm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoAoKGdPrnos-MkP3X7WUQlqTlJ743uxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "169637903534-obo9agq58t523pbnrlmc6ei0l9rrfhmm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
