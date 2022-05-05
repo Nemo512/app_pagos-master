@@ -13,7 +13,7 @@ class ContratopdfPage extends StatefulWidget {
 }
 
 class _ContratopdfPageState extends State<ContratopdfPage> {
-  String _localFile;
+  String _localFile = "";
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _ContratopdfPageState extends State<ContratopdfPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: orangeColor,
+            color: whiteColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),

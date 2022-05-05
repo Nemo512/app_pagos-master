@@ -28,7 +28,7 @@ class _EvaluacionPageState extends State<EvaluacionPage> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: orangeColor,
+              color: whiteColor,
             ),
             onPressed: () => Navigator.pop(context),
           ),

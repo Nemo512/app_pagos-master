@@ -28,7 +28,7 @@ class _DeclaraPageState extends State<DeclaraPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: orangeColor,
+            color: whiteColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -91,9 +91,9 @@ class _DeclaraPageState extends State<DeclaraPage> {
               child: Text(value),
             );
           }).toList(),
-          onChanged: (String value) {
+          onChanged: (String ? value) {
             setState(() {
-              _value = value;
+              _value = value as String;
             });
           },
           hint: Text("¿Familiar con cargo político?")),
@@ -129,9 +129,9 @@ class _DeclaraPageState extends State<DeclaraPage> {
               child: Text(value),
             );
           }).toList(),
-          onChanged: (String value) {
+          onChanged: (String ? value) {
             setState(() {
-              _value = value;
+              _value = value as String;
             });
           },
           hint: Text("¿Tengo un cargo político?")),

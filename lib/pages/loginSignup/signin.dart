@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:bankx/pages/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:local_auth/local_auth.dart';
@@ -13,17 +15,23 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final LocalAuthentication auth = LocalAuthentication();
-  bool _canCheckBiometrics;
-  List<BiometricType> _availableBiometrics;
+  late bool _canCheckBiometrics;
+  late List<BiometricType> _availableBiometrics;
   String _authorized = 'No autorizado';
   bool tooManyAttempt = false;
-  bool _isFingerPrintBiometricAvailable;
-  bool progress;
-  bool cancelTapOnFingerprintDialog;
-  DateTime currentBackPressTime;
-  String user, pass, userPreference, passPreference;
+  late bool _isFingerPrintBiometricAvailable;
+  late bool progress;
+  late bool cancelTapOnFingerprintDialog;
+  late DateTime currentBackPressTime;
+  late String user, pass, userPreference, passPreference;
   final userController = TextEditingController();
   final passController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  User? get userg {
+    return _auth.currentUser;
+  }
 
   @override
   void initState() {
@@ -91,7 +99,7 @@ class _SignInState extends State<SignIn> {
 
   Future<void> _authenticate() async {
     bool authenticated = false;
-    String exceptionMsg;
+    String? exceptionMsg;
     try {
       setState(() {
         _authorized = 'Authenticating';
@@ -284,7 +292,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  Future<void> validateField() {
+  Future<void> validateField() async {
     print('Usuario: ' + user);
     print('Pass: ' + pass);
 
@@ -317,8 +325,8 @@ class _SignInState extends State<SignIn> {
 
   Future<void> getPreferences() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    userPreference = await preferences.getString('user');
-    passPreference = await preferences.getString('pass');
+    userPreference = (await preferences.getString('user'))!;
+    passPreference = (await preferences.getString('pass'))!;
     //print('usuario preferences: '+userPreference);
 
     if (passPreference != '') {
@@ -327,8 +335,8 @@ class _SignInState extends State<SignIn> {
           context,
           PageTransition(
             duration: Duration(milliseconds: 0),
-            //type: PageTransitionType.rightToLeft,
-            child: BottomBar(),
+            type: PageTransitionType.rightToLeft,
+            child: BottomBar(), 
           ),
         );
       }

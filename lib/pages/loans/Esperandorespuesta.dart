@@ -1,8 +1,8 @@
-import 'dart:ui' as ui;
 import 'dart:async';
 import 'package:bankx/pages/loans/aprobado.dart';
 import 'package:bankx/pages/screens.dart';
 import 'package:lottie/lottie.dart';
+
 
 class Esperandorespuesta extends StatefulWidget {
   @override
@@ -36,7 +36,7 @@ class _Esperandorespuesta extends State<Esperandorespuesta> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: orangeColor,
+            color: whiteColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -69,4 +69,5 @@ class _Esperandorespuesta extends State<Esperandorespuesta> {
       ),
     );
   }
+
 }

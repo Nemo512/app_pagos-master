@@ -102,16 +102,15 @@ class _OTPCodeState extends State<OTPCode> {
       child: TextField(
         style: black16BoldTextStyle,
         maxLength: 1,
-        buildCounter: (BuildContext context,
-                {int currentLength, int maxLength, bool isFocused}) =>
-            null,
+     //   buildCounter: Widget as bool ? (BuildContext context,
+               // {required int currentLength, required int maxLength, required bool isFocused}) => null  ,
         controller: firstController,
         focusNode: firstFocusNode,
         keyboardType: TextInputType.number,
         cursorColor: primaryColor,
         textAlign: TextAlign.center,
         onChanged: (v) {
-          String value = firstController.text ?? "";
+          String value = firstController.text;
           if (value.isNotEmpty) {
             FocusScope.of(context).requestFocus(secondFocusNode);
           }
@@ -139,16 +138,16 @@ class _OTPCodeState extends State<OTPCode> {
       child: TextField(
         style: black16BoldTextStyle,
         maxLength: 1,
-        buildCounter: (BuildContext context,
-                {int currentLength, int maxLength, bool isFocused}) =>
-            null,
+      //  buildCounter: (BuildContext context,
+       //         {int currentLength, bool isFocused, int maxLength}) =>
+        //    null,
         controller: secondController,
         focusNode: secondFocusNode,
         keyboardType: TextInputType.number,
         cursorColor: primaryColor,
         textAlign: TextAlign.center,
         onChanged: (v) {
-          String value = secondController.text ?? "";
+          String value = secondController.text;
           if (value.isEmpty) {
             FocusScope.of(context).requestFocus(firstFocusNode);
             return;
@@ -178,16 +177,16 @@ class _OTPCodeState extends State<OTPCode> {
       child: TextField(
         style: black16BoldTextStyle,
         maxLength: 1,
-        buildCounter: (BuildContext context,
-                {int currentLength, int maxLength, bool isFocused}) =>
-            null,
+       // buildCounter: (BuildContext context,
+        //        {int currentLength, int maxLength, bool isFocused}) =>
+        //    null,
         controller: thirdController,
         focusNode: thirdFocusNode,
         keyboardType: TextInputType.number,
         cursorColor: primaryColor,
         textAlign: TextAlign.center,
         onChanged: (v) {
-          String value = thirdController.text ?? "";
+          String value = thirdController.text;
           if (value.isEmpty) {
             FocusScope.of(context).requestFocus(secondFocusNode);
             return;
@@ -217,16 +216,16 @@ class _OTPCodeState extends State<OTPCode> {
       child: TextField(
         style: black16BoldTextStyle,
         maxLength: 1,
-        buildCounter: (BuildContext context,
-                {int currentLength, int maxLength, bool isFocused}) =>
-            null,
+     //   buildCounter: (BuildContext context,
+        //        {int currentLength, int maxLength, bool isFocused}) =>
+        //    null,
         controller: forthController,
         focusNode: forthFocusNode,
         keyboardType: TextInputType.number,
         cursorColor: primaryColor,
         textAlign: TextAlign.center,
         onChanged: (v) {
-          String value = forthController.text ?? "";
+          String value = forthController.text;
           if (value.isEmpty) {
             FocusScope.of(context).requestFocus(thirdFocusNode);
             return;

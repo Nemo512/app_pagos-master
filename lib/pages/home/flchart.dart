@@ -12,10 +12,10 @@ class _FlChartState extends State<FlChart> {
   final Color rightBarColor = redColor;
   final double width = 6;
 
-  List<BarChartGroupData> rawBarGroups;
-  List<BarChartGroupData> showingBarGroups;
+  late List<BarChartGroupData> rawBarGroups;
+  late List<BarChartGroupData> showingBarGroups;
 
-  int touchedGroupIndex;
+  late int touchedGroupIndex;
 
   @override
   void initState() {
@@ -113,7 +113,7 @@ class _FlChartState extends State<FlChart> {
                     });
                     return;
                   }
-                  touchedGroupIndex = response.spot.touchedBarGroupIndex;
+                  touchedGroupIndex = response.spot?.touchedBarGroupIndex as int;
                   setState(() {
                     if (response.touchInput is PointerExitEvent ||
                         response.touchInput is PointerUpEvent) {

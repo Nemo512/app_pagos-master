@@ -1,16 +1,20 @@
+import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:bankx/pages/screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/Solicitud.dart';
 import 'Esperandorespuesta.dart';
+import 'package:http/http.dart' as http;
 
-class FirmaSolicitud extends StatefulWidget {
+class CapturaDocuments extends StatefulWidget {
 
-  FirmaSolicitud();
+  CapturaDocuments();
   @override
-  _FirmaSolicitud createState() => _FirmaSolicitud();
+  _CapturaDocuments createState() => _CapturaDocuments();
 }
 
-class _FirmaSolicitud extends State<FirmaSolicitud> {
+class _CapturaDocuments extends State<CapturaDocuments> {
+  List<Solicitud> solicitud= [];
  late  double height;
   String _value = 'Institución';
   int _value2 = 1;
@@ -407,14 +411,7 @@ class _FirmaSolicitud extends State<FirmaSolicitud> {
     return InkWell(
       onTap: ()
     {
-      Navigator.push(
-        context,
-        PageTransition(
-          duration: Duration(milliseconds: 500),
-          type: PageTransitionType.rightToLeft,
-          child: Esperandorespuesta(),
-        ),
-      );
+      getPreferences();
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: fixPadding * 2.0),
@@ -432,5 +429,105 @@ class _FirmaSolicitud extends State<FirmaSolicitud> {
         ),
       ),
     );
+  }
+
+
+ Future<void> getPreferences() async {
+   SharedPreferences preferences = await SharedPreferences.getInstance();
+   print('Data preferences: '+ await preferences.getString('dataNombre').toString());
+   print('Data preferences: '+ await preferences.getString('dataApellidoP').toString());
+   print('Data preferences: '+ await preferences.getString('dataApellidoM').toString());
+   print('Data preferences: '+ await preferences.getString('dataCurp').toString());
+   print('Data preferences: '+ await preferences.getString('dataEmail').toString());
+   print('Data preferences: '+ await preferences.getString('dataTelefono').toString());
+   print('Data preferences: '+ await preferences.getString('dataRfc').toString());
+   print('Data preferences: '+ await preferences.getString('dataNss').toString());
+   print('Data preferences: '+ await preferences.getString('dataEstado').toString());
+   print('Data preferences: '+ await preferences.getString('dataFisGral').toString());
+   print('Data preferences: '+ await preferences.getString('dataMonto').toString());
+   print('Data preferences: '+ await preferences.getString('dataTiempoP').toString());
+   print('Data preferences: '+ await preferences.getString('dataSector').toString());
+
+   solicitud.add(
+       Solicitud(
+           await preferences.getString('dataNombre').toString(),
+           await preferences.getString('dataApellidoP').toString(),
+           await preferences.getString('dataApellidoM').toString(),
+           await preferences.getString('dataCurp').toString(),
+           await preferences.getString('dataRfc').toString(),
+           await preferences.getString('dataEmail').toString(),
+           await preferences.getString('dataTelefono').toString(),
+           await preferences.getString('dataNss').toString(),
+           await preferences.getString('dataEstado').toString(),
+           await preferences.getString('dataFisGral').toString(),
+           await preferences.getString('dataMonto').toString(),
+           await preferences.getString('dataTiempoP').toString(),
+           await preferences.getString('dataSector').toString())
+   );
+   insertCliente();
+ }
+
+ Future<void> insertCliente() async{
+   print("Entrando al metodo insertCliente ");
+   var url = "https://24ijin89wg.execute-api.us-east-1.amazonaws.com/postCliente";
+
+   Map data = {
+     "nombre": solicitud[0].nombre,
+     "apellidoP": solicitud[0].apellidoPaterno,
+     "apellidoM": solicitud[0].apellidoMaterno,
+     "curp": solicitud[0].curp,
+     "rfc": solicitud[0].rfc,
+     "nss": solicitud[0].nss,
+     "email": solicitud[0].email,
+     "telefono": solicitud[0].telefono,
+     "estado": solicitud[0].estado,
+     "fisGral": solicitud[0].fiscalGral,
+     "monto": solicitud[0].monto,
+     "tiempoP": solicitud[0].mes,
+     "sector": solicitud[0].sector
+   };
+
+   var body = json.encode(data);
+   var response = await http.post(Uri.parse(url),
+       headers: {"Content-Type": "application/json"},
+       body: body
+   );
+   if(response.statusCode == 200){
+     print(response.body);
+     insertPreSolicitud();
+   }else{
+     throw Exception("Error en ClientePost--> "+ response.body);
+   }
+ }
+
+  Future<void> insertPreSolicitud() async{
+    print("Entrando al metodo insertPreSolicitud ");
+    var url = "https://wsa1hyq844.execute-api.us-east-1.amazonaws.com/postPreSolicitud";
+
+    Map data = {
+      "monto": solicitud[0].monto,
+      "tiempoP": solicitud[0].mes,
+    };
+
+    var body = json.encode(data);
+    var response = await http.post(Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: body
+    );
+
+    if(response.statusCode == 200){
+      solicitud.clear();
+      print(response.body);
+      Navigator.push(
+        context,
+        PageTransition(
+          duration: Duration(milliseconds: 500),
+          type: PageTransitionType.rightToLeft,
+          child: Esperandorespuesta(),
+        ),
+      );
+    }else{
+      throw Exception("Error en PresolicitudPost--> "+ response.body);
+    }
   }
 }

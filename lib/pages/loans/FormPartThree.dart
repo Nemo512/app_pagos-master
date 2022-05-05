@@ -1,38 +1,41 @@
 import 'package:bankx/pages/screens.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'FirmaSolicitud.dart';
+import 'capturaDocumentos.dart';
 
 class FormPartThree extends StatefulWidget {
-  final String loanType;
-  final String number;
-  final String dueAmount;
-  final String emiAmount;
+  //final String loanType;
+  //final String number;
+  //final String dueAmount;
+  //final String emiAmount;
 
-  FormPartThree({this.loanType, this.number, this.dueAmount, this.emiAmount});
+  //FormPartThree({ /*this.loanType,  this.number,  this.dueAmount,  this.emiAmount*/ });
   @override
   _FormPartThree createState() => _FormPartThree();
 }
 
 class _FormPartThree extends State<FormPartThree> {
-  double height;
-  String _value = 'Institución';
-  int _value2 = 1;
+  late double height;
+  String eduValue = 'Selecciona un Estado';
+  String fisGralValue = 'Selecciona una Institución';
   bool valuefirst = false;
-  bool valuesecond = false;
   double value = 40000.0;
   double min = 2000;
   double max = 400000;
   double month = 20.0;
   double min_month = 10;
   double max_month = 60.0;
+  bool btnDiasble = true;
+  double opacity = 0.2;
+
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: scaffoldBgColor,
       appBar: AppBar(
-        backgroundColor: whiteColor,
+        backgroundColor: primaryColor,
         elevation: 1.0,
         centerTitle: true,
         title: Text(
@@ -45,7 +48,7 @@ class _FormPartThree extends State<FormPartThree> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: orangeColor,
+            color: whiteColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -68,7 +71,6 @@ class _FormPartThree extends State<FormPartThree> {
               height20Space,
               customerInstDropdown(),
               height20Space,
-              customerCheck(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -80,7 +82,7 @@ class _FormPartThree extends State<FormPartThree> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             border:
-                                Border.all(color: Color(0xFFF1F1F1), width: 1)),
+                            Border.all(color: Color(0xFFF1F1F1), width: 1)),
                         padding: EdgeInsets.all(20),
                         margin: EdgeInsets.all(10),
                         child: Column(
@@ -158,7 +160,7 @@ class _FormPartThree extends State<FormPartThree> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           border:
-                              Border.all(color: Color(0xFFF1F1F1), width: 1)),
+                          Border.all(color: Color(0xFFF1F1F1), width: 1)),
                       padding: EdgeInsets.all(20),
                       margin: EdgeInsets.all(10),
                       child: Column(
@@ -179,6 +181,7 @@ class _FormPartThree extends State<FormPartThree> {
                           ),
                         ],
                       )),
+                  customerCheck(),
                   countinueButton()
                 ],
               ),
@@ -190,30 +193,35 @@ class _FormPartThree extends State<FormPartThree> {
   }
 
   countinueButton() {
-    return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        PageTransition(
-          duration: Duration(milliseconds: 500),
-          type: PageTransitionType.rightToLeft,
-          child: FirmaSolicitud(),
-        ),
-      ),
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: fixPadding * 2.0),
-        padding: EdgeInsets.symmetric(
-          vertical: fixPadding + 4.0,
-        ),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: primaryColor,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Text(
-          'Enviar Solicitud',
-          style: black18BoldTextStyle,
-        ),
-      ),
+    return AbsorbPointer(
+        absorbing: btnDiasble,
+        child:
+        Opacity(
+          opacity: opacity,
+          child:       InkWell(
+            onTap: () async{
+              print("Monto: "+ value.toString());
+              print("Meses: "+ month.toString());
+              saveDataPref(eduValue, fisGralValue, value, month);
+              validateField();
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: fixPadding * 2.0),
+              padding: EdgeInsets.symmetric(
+                vertical: fixPadding + 4.0,
+              ),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                'Siguiente',
+                style: black18BoldTextStyle,
+              ),
+            ),
+          ),
+        )
     );
   }
 
@@ -224,46 +232,110 @@ class _FormPartThree extends State<FormPartThree> {
           horizontal: fixPadding + 5.0,
           vertical: fixPadding - 6.0,
         ),
-        /*
-      decoration: BoxDecoration(
-        color: whiteColor,
-        boxShadow: [
-          BoxShadow(
-            spreadRadius: 1.0,
-            blurRadius: 4.0,
-            color: greyColor.withOpacity(0.5),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(10.0),
-      ),*/
         child: Row(children: [
           Checkbox(
-            checkColor: Colors.orange,
-            activeColor: Colors.green,
+            checkColor: Colors.white,
+            activeColor: primaryColor,
             value: this.valuefirst,
-            onChanged: (bool value) {
+            onChanged: (bool ? value) {
               setState(() {
-                this.valuefirst = value;
+                this.valuefirst = value as bool;
+                if(value == true){
+                  btnDiasble = false;
+                  opacity = 1.0;
+                }else{
+                  btnDiasble = true;
+                  opacity = 0.2;
+                }
               });
             },
           ),
           Text('Acepto los términos y condiciones.',
               style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.grey,
+                fontSize: 13.0,
+                color: Colors.black,
               )),
         ]));
   }
 
   customerEdoDropdown() {
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: fixPadding * 4.0),
+    padding: EdgeInsets.symmetric(
+      horizontal: fixPadding + 5.0,
+      vertical: fixPadding - 6.0,
+    ),
+    decoration: BoxDecoration(
+      color: camposColor,
+      boxShadow: [
+        BoxShadow(
+          spreadRadius: 1.0,
+          blurRadius: 4.0,
+          color: greyColor.withOpacity(0.5),
+        ),
+      ],
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    child: DropdownButton(
+        value: eduValue,
+        items: <String>[
+          "Selecciona un Estado",
+          "Aguascalientes",
+          "Baja California",
+          "Baja California Sur",
+          "Campeche",
+          "CDMX",
+          "Chiapas",
+          "Chihuahua",
+          "Coahuila",
+          "Colima",
+          "Durango",
+          "Guanajuato",
+          "Guerrero",
+          "Hidalgo",
+          "Jalisco",
+          "Michoacán",
+          "Morelos",
+          "México",
+          "Nayarit",
+          "Nuevo León",
+          "Oaxaca",
+          "Puebla",
+          "Querétaro",
+          "Quintana Roo",
+          "San Luis Potosí",
+          "Sinaloa",
+          "Sonora",
+          "Tabasco",
+          "Tamaulipas",
+          "Tlaxcala",
+          "Veracruz",
+          "Yucatán",
+          "Zacatecas"
+        ].map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (String ? value) {
+          setState(() {
+            eduValue = value as String;
+          });
+        },
+        hint: Text("Selecciona un Estado")),
+  );
+}
+
+  customerInstDropdown() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: fixPadding * 2.0),
+      margin: EdgeInsets.symmetric(horizontal: fixPadding * 4.0),
       padding: EdgeInsets.symmetric(
         horizontal: fixPadding + 5.0,
         vertical: fixPadding - 6.0,
       ),
       decoration: BoxDecoration(
-        color: whiteColor,
+        color: camposColor,
         boxShadow: [
           BoxShadow(
             spreadRadius: 1.0,
@@ -274,95 +346,91 @@ class _FormPartThree extends State<FormPartThree> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: DropdownButton(
-          // value: _value,
+         value: fisGralValue,
           items: <String>[
-            "Aguascalientes",
-            "Baja California",
-            "Baja California Sur",
-            "Campeche",
-            "CDMX",
-            "Chiapas",
-            "Chihuahua",
-            "Coahuila",
-            "Colima",
-            "Durango",
-            "Guanajuato",
-            "Guerrero",
-            "Hidalgo",
-            "Jalisco",
-            "Michoacán",
-            "Morelos",
-            "México",
-            "Nayarit",
-            "Nuevo León",
-            "Oaxaca",
-            "Puebla",
-            "Querétaro",
-            "Quintana Roo",
-            "San Luis Potosí",
-            "Sinaloa",
-            "Sonora",
-            "Tabasco",
-            "Tamaulipas",
-            "Tlaxcala",
-            "Veracruz",
-            "Yucatán",
-            "Zacatecas"
+            "Selecciona una Institución",
+            "Físcalia General",
+            "IMSS",
+            "ISSSTE"
           ].map((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
             );
           }).toList(),
-          onChanged: (String value) {
+          onChanged: (String ? value) {
             setState(() {
-              _value = value;
-            });
-          },
-          hint: Text("Selecciona un Estado")),
-    );
-  }
-
-  customerInstDropdown() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: fixPadding * 2.0),
-      padding: EdgeInsets.symmetric(
-        horizontal: fixPadding + 5.0,
-        vertical: fixPadding - 6.0,
-      ),
-      decoration: BoxDecoration(
-        color: whiteColor,
-        boxShadow: [
-          BoxShadow(
-            spreadRadius: 1.0,
-            blurRadius: 4.0,
-            color: greyColor.withOpacity(0.5),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: DropdownButton(
-          value: _value2,
-          items: [
-            DropdownMenuItem(
-              child: Text("Físcalia General"),
-              value: 1,
-            ),
-            DropdownMenuItem(
-              child: Text("IMSS"),
-              value: 2,
-            ),
-            DropdownMenuItem(
-              child: Text("ISSSTE"),
-              value: 3,
-            )
-          ],
-          onChanged: (int value) {
-            setState(() {
-              _value2 = value;
+              fisGralValue = value as String;
             });
           },
           hint: Text("Selecciona una Institución")),
     );
   }
+
+  Future<void> saveDataPref(edo, fisGral, monto, mes) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setString('dataEstado', edo);
+    await preferences.setString('dataFisGral', fisGral);
+    await preferences.setString('dataMonto', monto.toString());
+    await preferences.setString('dataTiempoP', mes.toString());
+  }
+
+  Future<void> validateField() async {
+    print('Usuario: ' + fisGralValue.toString());
+    print('Pass: ' + eduValue.toString());
+
+    if (eduValue.isEmpty || eduValue == '' || eduValue == null || eduValue == "Selecciona un Estado") {
+      showMyDialogDanger("Selecciona Estado.");
+    } else if (fisGralValue.isEmpty || fisGralValue == '' || fisGralValue == null || fisGralValue == "Selecciona una Institución") {
+      showMyDialogDanger("Selecciona Fiscalia.");
+    } else{
+      Navigator.push(context,
+        PageTransition(duration: Duration(milliseconds: 500), type: PageTransitionType.rightToLeft,
+          child: CapturaDocuments(),),);
+    }
+  }
+
+  Future<void> showMyDialogDanger(String msg) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Introduce los datos requeridos',
+            style: TextStyle(
+              fontFamily: 'Fredoka',
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  msg,
+                  style: TextStyle(
+                    fontFamily: 'Fredoka',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Aceptar',
+                style: TextStyle(
+                  fontFamily: 'Fredoka',
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
+

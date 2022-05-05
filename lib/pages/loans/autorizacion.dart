@@ -29,7 +29,7 @@ class _AutorizacionPageState extends State<AutorizacionPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: orangeColor,
+            color: whiteColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),

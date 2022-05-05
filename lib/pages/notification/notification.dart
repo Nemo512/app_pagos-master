@@ -8,14 +8,8 @@ class Notifications extends StatefulWidget {
 class _NotificationsState extends State<Notifications> {
   final notificationList = [
     {
-      'title': 'Deposited successfully..!',
-      'notification':
-          'Congratulation... Your money successfully deposited to your bank account.',
-    },
-    {
-      'title': 'Use your card & get upto 20% cashback',
-      'notification':
-          'Use your BankX card to any store and get upto 20% cashback.',
+      'title': 'Depósito Realizado!',
+      'notification': 'Felicidades tú depósito ha sido realizado.',
     },
   ];
   @override
@@ -25,7 +19,7 @@ class _NotificationsState extends State<Notifications> {
       appBar: AppBar(
         backgroundColor: whiteColor,
         title: Text(
-          'Notifications',
+          'Notificaciones',
           style: black18BoldTextStyle,
         ),
         centerTitle: true,
@@ -101,12 +95,12 @@ class _NotificationsState extends State<Notifications> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        notification['title'],
+                        notification['title'] as String,
                         style: black14BoldTextStyle,
                       ),
                       heightSpace,
                       Text(
-                        notification['notification'],
+                        notification['notification'] as String,
                         style: black14MediumTextStyle,
                       ),
                     ],
@@ -135,7 +129,7 @@ class _NotificationsState extends State<Notifications> {
             height: 20.0,
           ),
           Text(
-            'No new notifications',
+            'No hay nuevas notificaciones',
             style: grey16BoldTextStyle,
           )
         ],

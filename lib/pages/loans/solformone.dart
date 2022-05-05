@@ -1,3 +1,4 @@
+import 'package:bankx/pages/loans/solformtre.dart';
 import 'package:bankx/pages/loans/solformtwo.dart';
 import 'package:flutter/material.dart';
 import 'package:bankx/pages/screens.dart';
@@ -10,10 +11,17 @@ class SolformonePage extends StatefulWidget {
 }
 
 class _SolformonePageState extends State<SolformonePage> {
-  String _value = 'Institución';
+  String _value = 'Genero';
+  String _value2 = "Estado civil";
+  String _value3 = "Residencia";
+  String _value4 = "Escolaridad";
   double value = 40000.0;
   double min = 2000;
   double max = 400000;
+  bool valuefirst = false;
+  bool btnDiasble = true;
+  double opacity = 0.2;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +39,7 @@ class _SolformonePageState extends State<SolformonePage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: orangeColor,
+            color: whiteColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -97,6 +105,8 @@ class _SolformonePageState extends State<SolformonePage> {
                       height20Space,
                       EscoDropdown(),
                       height20Space,
+                      customerCheck(),
+                      height20Space,
                       countinueButton()
                     ],
                   ),
@@ -137,9 +147,9 @@ class _SolformonePageState extends State<SolformonePage> {
               child: Text(value),
             );
           }).toList(),
-          onChanged: (String value) {
+          onChanged: (String ? value) {
             setState(() {
-              _value = value;
+              _value = value as String;
             });
           },
           hint: Text("Género")),
@@ -175,9 +185,9 @@ class _SolformonePageState extends State<SolformonePage> {
               child: Text(value),
             );
           }).toList(),
-          onChanged: (String value) {
+          onChanged: (String ? value) {
             setState(() {
-              _value = value;
+              _value2 = value as String;
             });
           },
           hint: Text("Estado Civil")),
@@ -213,9 +223,9 @@ class _SolformonePageState extends State<SolformonePage> {
               child: Text(value),
             );
           }).toList(),
-          onChanged: (String value) {
+          onChanged: (String ? value) {
             setState(() {
-              _value = value;
+              _value3 = value as String;
             });
           },
           hint: Text("Tipo de Residencia")),
@@ -250,9 +260,9 @@ class _SolformonePageState extends State<SolformonePage> {
               child: Text(value),
             );
           }).toList(),
-          onChanged: (String value) {
+          onChanged: (String ? value) {
             setState(() {
-              _value = value;
+              _value4 = value as String;
             });
           },
           hint: Text("Escolaridad")),
@@ -267,6 +277,7 @@ class _SolformonePageState extends State<SolformonePage> {
           duration: Duration(milliseconds: 500),
           type: PageTransitionType.rightToLeft,
           child: SolformtwoPage(),
+          //child: SolformtrePage(),
         ),
       ),
       child: Container(
@@ -285,5 +296,38 @@ class _SolformonePageState extends State<SolformonePage> {
         ),
       ),
     );
+  }
+
+  customerCheck() {
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: fixPadding * 2.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: fixPadding + 5.0,
+          vertical: fixPadding - 6.0,
+        ),
+        child: Row(children: [
+          Checkbox(
+            checkColor: Colors.white,
+            activeColor: primaryColor,
+            value: this.valuefirst,
+            onChanged: (bool ? value) {
+              setState(() {
+                this.valuefirst = value as bool;
+                if(value == true){
+                  btnDiasble = false;
+                  opacity = 1.0;
+                }else{
+                  btnDiasble = true;
+                  opacity = 0.2;
+                }
+              });
+            },
+          ),
+          Text('Acepto qué la información es la correcta',
+              style: TextStyle(
+                fontSize: 13.0,
+                color: Colors.black,
+              )),
+        ]));
   }
 }

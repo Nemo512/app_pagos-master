@@ -7,7 +7,7 @@ class Cards extends StatefulWidget {
 }
 
 class _CardsState extends State<Cards> {
-  double height;
+  late double height;
   double limit = 5888.0;
   final transactionsList = [
     {
@@ -106,6 +106,7 @@ class _CardsState extends State<Cards> {
 
   transactions() {
     return ColumnBuilder(
+      textDirection: TextDirection.ltr,
       itemCount: transactionsList.length,
       itemBuilder: (context, index) {
         final transaction = transactionsList[index];
@@ -130,7 +131,7 @@ class _CardsState extends State<Cards> {
                       border: Border.all(color: primaryColor),
                     ),
                     child: Icon(
-                      (transaction['iscredit'])
+                      (transaction['iscredit']) != null
                           ? Icons.arrow_downward
                           : Icons.arrow_upward,
                       color: primaryColor,
@@ -141,12 +142,12 @@ class _CardsState extends State<Cards> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        transaction['type'],
+                        transaction['type'] as String,
                         style: black16MediumTextStyle,
                       ),
                       height5Space,
                       Text(
-                        transaction['owner'],
+                        transaction['owner'] as String,
                         style: grey14MediumTextStyle,
                       ),
                     ],
@@ -162,7 +163,7 @@ class _CardsState extends State<Cards> {
                   ),
                   height5Space,
                   Text(
-                    (transaction['iscredit'])
+                    (transaction['iscredit']) != null
                         ? '+${transaction['amount']}'
                         : '-${transaction['amount']}',
                     style: black16BoldTextStyle,

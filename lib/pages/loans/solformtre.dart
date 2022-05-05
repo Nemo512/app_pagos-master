@@ -15,7 +15,10 @@ class _SolformtrePageState extends State<SolformtrePage> {
   final dateTimeController = TextEditingController(text: '21 Mar 20, 11:45am');
 
   DateTime selectedDate = DateTime(2021, 3, 20, 11, 45);
-  String time;
+  String time = "";
+  bool valuefirst = false;
+  bool btnDiasble = true;
+  double opacity = 0.2;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class _SolformtrePageState extends State<SolformtrePage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: orangeColor,
+            color: whiteColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -54,6 +57,8 @@ class _SolformtrePageState extends State<SolformtrePage> {
               height20Space,
               height20Space,
               dateTimeTextField(),
+              height20Space,
+              customerCheck(),
               height20Space,
               countinueButton(),
             ],
@@ -124,7 +129,8 @@ class _SolformtrePageState extends State<SolformtrePage> {
   }
 
   dateDialog() async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
+
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2000),
@@ -225,5 +231,38 @@ class _SolformtrePageState extends State<SolformtrePage> {
         ),
       ),
     );
+  }
+
+  customerCheck() {
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: fixPadding * 2.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: fixPadding + 5.0,
+          vertical: fixPadding - 6.0,
+        ),
+        child: Row(children: [
+          Checkbox(
+            checkColor: Colors.white,
+            activeColor: primaryColor,
+            value: this.valuefirst,
+            onChanged: (bool ? value) {
+              setState(() {
+                this.valuefirst = value as bool;
+                if(value == true){
+                  btnDiasble = false;
+                  opacity = 1.0;
+                }else{
+                  btnDiasble = true;
+                  opacity = 0.2;
+                }
+              });
+            },
+          ),
+          Text('Acepto qué la información es la correcta',
+              style: TextStyle(
+                fontSize: 13.0,
+                color: Colors.black,
+              )),
+        ]));
   }
 }

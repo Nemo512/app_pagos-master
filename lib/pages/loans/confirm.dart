@@ -27,7 +27,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: orangeColor,
+            color: whiteColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),
