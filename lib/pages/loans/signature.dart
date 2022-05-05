@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
@@ -18,7 +19,7 @@ class SignaturePadApp extends StatelessWidget {
 }
 
 class _MyHomePage extends StatefulWidget {
-  _MyHomePage({Key key}) : super(key: key);
+  _MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -33,13 +34,13 @@ class _MyHomePageState extends State<_MyHomePage> {
   }
 
   void _handleClearButtonPressed() {
-    signatureGlobalKey.currentState.clear();
+    signatureGlobalKey.currentState?.clear();
   }
 
   void _handleSaveButtonPressed() async {
     final data =
-    await signatureGlobalKey.currentState.toImage(pixelRatio: 3.0);
-    final bytes = await data.toByteData(format: ui.ImageByteFormat.png);
+    await signatureGlobalKey.currentState?.toImage(pixelRatio: 3.0);
+    final bytes = await data?.toByteData(format: ui.ImageByteFormat.png);
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) {
@@ -48,7 +49,7 @@ class _MyHomePageState extends State<_MyHomePage> {
             body: Center(
               child: Container(
                 color: Colors.grey[300],
-                child: Image.memory(bytes.buffer.asUint8List()),
+                child: Image.memory(bytes?.buffer.asUint8List() as Uint8List),
               ),
             ),
           );

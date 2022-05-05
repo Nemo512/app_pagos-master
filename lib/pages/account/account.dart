@@ -11,9 +11,9 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: scaffoldBgColor,
+      backgroundColor: Color(0xFFEBF1F3),
       appBar: AppBar(
-        backgroundColor: whiteColor,
+        backgroundColor: primaryColor,
         elevation: 1.0,
         centerTitle: true,
         title: Text(

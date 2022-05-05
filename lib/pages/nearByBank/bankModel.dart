@@ -8,11 +8,11 @@ class Bank {
   LatLng locationCoords;
 
   Bank({
-    this.bankname,
-    this.address,
-    this.rating,
-    this.distance,
-    this.locationCoords,
+    required this.bankname,
+    required this.address,
+    required this.rating,
+    required this.distance,
+    required this.locationCoords,
   });
 }
 

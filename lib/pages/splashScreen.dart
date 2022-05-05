@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bankx/pages/screens.dart';
+import 'loginSignup/google_singin.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -8,7 +9,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  double width;
+  late double width;
   @override
   void initState() {
     super.initState();
@@ -18,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => SignIn(),
+          //builder: (context) => HomeGoogleSignIn(),
         ),
       ),
     );

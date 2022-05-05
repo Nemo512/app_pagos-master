@@ -42,7 +42,7 @@ class _LoansState extends State<Loans> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: orangeColor,
+            color: whiteColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -179,19 +179,20 @@ class _LoansState extends State<Loans> {
         child: Container(
           padding: EdgeInsets.all(fixPadding),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                primaryColor,
-                whiteColor,
-              ],
-              stops: [0.0, 2.0],
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter,
-              tileMode: TileMode.clamp, //primaryColor,
-            ),
+            boxShadow: [
+              new BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 20.0,
+              ),
+            ],
             borderRadius: BorderRadius.circular(fixPadding),
+            image: DecorationImage(
+              image: AssetImage('assets/bg_ion.png'),
+              fit: BoxFit.cover,
+            ),
           ),
-          child: Column(
+          child:
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
@@ -203,61 +204,18 @@ class _LoansState extends State<Loans> {
                     children: [
                       Text(
                         loanType,
-                        style: black16BoldTextStyle,
+                        style: white18BoldTextStyle,
                       ),
                       height5Space,
-                      Text(
-                        number,
-                        style: black16BoldTextStyle,
-                      ),
-                    ],
-                  ),
-                  InkWell(
-                    onTap: () => Navigator.push(
-                      context,
-                      PageTransition(
-                        duration: Duration(milliseconds: 500),
-                        type: PageTransitionType.rightToLeft,
-                        child: FormPartOne(
-                          loanType: loanType,
-                          number: number,
-                          dueAmount: dueAmount,
-                          emiAmount: emiAmount,
-                        ),
-                      ),
-                    ),
-                    child: Image.asset(
-                      'assets/emsol.png',
-                      height: 65.0,
-                      width: 65.0,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Cantidad Máxima para prestar',
-                        style: grey16MediumTextStyle,
-                      ),
-                      height5Space,
-                      Text(
-                        '\$$dueAmount',
-                        style: grey16MediumTextStyle,
-                      ),
                       RatingBar(
-                          itemSize: 15,
+                          itemSize: 25,
                           initialRating: 4.5,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
                           itemCount: 5,
                           ratingWidget: RatingWidget(
                               full:
-                                  const Icon(Icons.star, color: Colors.orange),
+                              const Icon(Icons.star, color: Colors.orange),
                               half: const Icon(
                                 Icons.star_half,
                                 color: Colors.orange,
@@ -271,25 +229,77 @@ class _LoansState extends State<Loans> {
                               var _ratingValue = value;
                             });
                           }),
-                      const SizedBox(height: 2)
+                      height20Space,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Cantidad a prestar. ',
+                                style: black16BoldTextStyle,
+                              ),
+                              height5Space,
+                              Text(
+                                '\$$dueAmount',
+                                style: grey16MediumTextStyle,
+                              ),
+                              Text(
+                                'CAT: \$$emiAmount',
+                                style: grey16MediumTextStyle,
+                              ),
+                              const SizedBox(height: 2)
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              height5Space,
+                              height5Space,
+                              height5Space,
+                            ],
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      height5Space,
-                      height5Space,
-                      Text(
-                        'CAT',
-                        style: grey16MediumTextStyle,
-                      ),
-                      height5Space,
-                      Text(
-                        '\$$emiAmount',
-                        style: grey16MediumTextStyle,
-                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          boxShadow: [
+                            new BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 15.0,
+                            ),
+                          ],
+                        ),
+                        child: InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            PageTransition(
+                              duration: Duration(milliseconds: 500),
+                              type: PageTransitionType.rightToLeft,
+                              child: FormPartOne(
+                                loanType: loanType,
+                                number: number,
+                                dueAmount: dueAmount,
+                                emiAmount: emiAmount,
+                              ),
+                            ),
+                          ),
+                          child: Image.asset(
+                            'assets/emsol.png',
+                            height: 120.0,
+                            width: 120.0,
+                          ),
+
+                        ),
+                      )
                     ],
-                  ),
+                  )
                 ],
               ),
             ],

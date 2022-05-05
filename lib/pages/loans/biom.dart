@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
+import 'package:bankx/pages/screens.dart';
 
 Future<void> main() async {
   // Obtén una lista de las cámaras disponibles en el dispositivo.
@@ -18,7 +19,7 @@ Future<void> main() async {
       theme: ThemeData.dark(),
       home: TakePictureScreen(
         // Pasa la cámara correcta al widget de TakePictureScreen
-        camera: firstCamera,
+        camera: firstCamera, key: null,
       ),
     ),
   );
@@ -29,8 +30,8 @@ class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
 
   const TakePictureScreen({
-    Key key,
-    @required this.camera,
+    Key ? key,
+    required this.camera,
   }) : super(key: key);
 
   @override
@@ -38,8 +39,8 @@ class TakePictureScreen extends StatefulWidget {
 }
 
 class TakePictureScreenState extends State<TakePictureScreen> {
-  CameraController _controller;
-  Future<void> _initializeControllerFuture;
+  late CameraController _controller;
+  late Future<void> _initializeControllerFuture;
 
   @override
   void initState() {
@@ -67,7 +68,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Take a picture')),
+      appBar: AppBar(title: Text('Tómate una foto')),
       // Debes esperar hasta que el controlador se inicialice antes de mostrar la vista previa
       // de la cámara. Utiliza un FutureBuilder para mostrar un spinner de carga
       // hasta que el controlador haya terminado de inicializar.
@@ -96,14 +97,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // Construye la ruta donde la imagen debe ser guardada usando
             // el paquete path.
             final path = join(
-
               //
               (await getTemporaryDirectory()).path,
               '${DateTime.now()}.png',
             );
 
             // Attempt to take a picture and log where it's been saved
-           // await _controller.takePicture(path);
+            // await _controller.takePicture(path);
             // En este ejemplo, guarda la imagen en el directorio temporal. Encuentra
             // el directorio temporal usando el plugin `path_provider`.
             Navigator.push(
@@ -126,7 +126,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
 
-  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
+  const DisplayPictureScreen({Key ? key, required this.imagePath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

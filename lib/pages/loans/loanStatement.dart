@@ -1,17 +1,17 @@
 import 'package:bankx/pages/screens.dart';
 
 class LoanStatement extends StatefulWidget {
-  final String loanType;
+  /*final String loanType;
   final String number;
   final String dueAmount;
   final String emiAmount;
-  LoanStatement({this.loanType, this.number, this.dueAmount, this.emiAmount});
+  LoanStatement({this.loanType, this.number, this.dueAmount, this.emiAmount});*/
   @override
   _LoanStatementState createState() => _LoanStatementState();
 }
 
 class _LoanStatementState extends State<LoanStatement> {
-  double height;
+  late double height;
   String _value = 'Institución';
   int _value2 = 1;
   bool valuefirst = false;
@@ -231,9 +231,9 @@ class _LoanStatementState extends State<LoanStatement> {
                         value: 'Institución 3',
                       )
                     ],
-                    onChanged: (String value) {
+                    onChanged: (String ? value) {
                       setState(() {
-                        _value = value;
+                        _value = value as String;
                       });
                     },
                     hint: Text("Selecciona un Estado")),
@@ -258,9 +258,9 @@ class _LoanStatementState extends State<LoanStatement> {
                         value: 3,
                       )
                     ],
-                    onChanged: (int value) {
+                    onChanged: (int ? value) {
                       setState(() {
-                        _value2 = value;
+                        _value2 = value as int;
                       });
                     },
                     hint: Text("Selecciona una Institución")),
@@ -268,9 +268,9 @@ class _LoanStatementState extends State<LoanStatement> {
                   checkColor: Colors.orange,
                   activeColor: Colors.green,
                   value: this.valuefirst,
-                  onChanged: (bool value) {
+                  onChanged: (bool ? value) {
                     setState(() {
-                      this.valuefirst = value;
+                      this.valuefirst = value as bool;
                     });
                   },
                 ),

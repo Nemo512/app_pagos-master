@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:animated/animated.dart';
 import 'package:bankx/pages/screens.dart';
 import 'package:lottie/lottie.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../loans/photoPrueba.dart';
+import '../../models/Sector.dart';
+
 
 class Home extends StatefulWidget {
   @override
@@ -13,9 +17,33 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool scaled = false;
+
+  Future<List<Sector>>?  _listSector;
+  Future<List<Sector>> _getSector() async{
+    List<Sector> sectores = [];
+    final response = await http.get(Uri.parse("https://zqk6d9arfd.execute-api.us-east-1.amazonaws.com/Sectores"));
+    if(response.statusCode == 200){
+      print(response.body);
+      String body  = utf8.decode(response.bodyBytes);
+      final jsonData = jsonDecode(body);
+      for(var item  in jsonData["content"]){
+        sectores.add(
+          Sector(item["idSector"], item["nombreSector"], item["imageUrl"])
+        );
+      }
+      return sectores;
+
+    }else{
+      throw Exception("Fallo de conexión");
+    }
+    return sectores;
+  }
+
+
   @override
   void initState() {
     super.initState();
+    _listSector = _getSector();
     Timer(
       Duration(milliseconds: 80),
       () => setState(() {
@@ -33,7 +61,7 @@ class _HomeState extends State<Home> {
         elevation: 1.0,
         centerTitle: true,
         title: Text('Selecciona tú Sector'),
-        toolbarHeight: 80, // default is 56
+        toolbarHeight: 56, // default is 56
       ),
       body: SingleChildScrollView(
           child: Container(
@@ -48,35 +76,40 @@ class _HomeState extends State<Home> {
             height5Space,
             Container(
               height: 300,
-              child: ListView(
-                children: [
-                  Column(
-                    children: [
-                      cardSector(
-                        titleSector: 'Sector Educativo',
-                        imageSector: 'assets/edu.png',
-                      ),
-                      cardSector(
-                        titleSector: 'Sector Médico',
-                        imageSector: 'assets/med.png',
-                      ),
-                      cardSector(
-                        titleSector: 'Sector Gobierno',
-                        imageSector: 'assets/gober.png',
-                      ),
-                      cardSector(
-                        titleSector: 'Pensionados',
-                        imageSector: 'assets/pens.png',
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              child: FutureBuilder(
+                future: _listSector,
+                builder: (context, snapshot){
+                  if(snapshot.hasData){
+                    return ListView(
+                      children: _listSectores(snapshot.data),
+                    );
+                  }else{
+                    print(snapshot.error);
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+
+                },
+              )
             ),
           ],
         ),
       )),
     );
+  }
+
+  List<Widget> _listSectores(data){
+    List<Widget> sect = [];
+
+    for(var sec in data){
+      sect.add(
+        cardSector(
+        titleSector: sec.nombre,
+        imageSector: sec.image,
+      )
+      );
+    }
+
+    return sect;
   }
 
   cardSector({titleSector, imageSector}) {
@@ -101,6 +134,7 @@ class _HomeState extends State<Home> {
           ),
           child: InkWell(
             onTap: () {
+              saveSector(titleSector);
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Loans()));
             },
@@ -135,4 +169,28 @@ class _HomeState extends State<Home> {
           )),
     );
   }
+
+  Future<void> saveSector(sector) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setString('dataSector', sector);
+  }
+
+
+///////////////////////////////
+  /////////////este metodo esta diseñado para obtener el status de la PreSolicitud
+  Future<void> getStatusPreSolicitud() async{
+    print("Entrando al metodo insertCliente ");
+    var url = "https://24ijin89wg.execute-api.us-east-1.amazonaws.com/postCliente";
+
+    var response = await http.get(Uri.parse(url),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if(response.statusCode == 200){
+      print(response.body);
+    }else{
+      throw Exception("Error en getStatusPreSolicitud--> "+ response.body);
+    }
+  }
 }
+

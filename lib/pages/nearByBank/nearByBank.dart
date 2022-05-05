@@ -8,10 +8,10 @@ class NearByBanks extends StatefulWidget {
 }
 
 class _NearByBanksState extends State<NearByBanks> {
-  GoogleMapController _controller;
+  late GoogleMapController _controller;
   List<Marker> allMarkers = [];
-  PageController _pageController;
-  int prevPage;
+  late PageController _pageController;
+  late int prevPage;
   @override
   void initState() {
     super.initState();
@@ -33,8 +33,8 @@ class _NearByBanksState extends State<NearByBanks> {
   }
 
   _onScroll() {
-    if (_pageController.page.toInt() != prevPage) {
-      prevPage = _pageController.page.toInt();
+    if (_pageController.page?.toInt() != prevPage) {
+      prevPage = _pageController.page?.toInt() as int;
       moveCamera();
     }
   }
@@ -45,7 +45,7 @@ class _NearByBanksState extends State<NearByBanks> {
       builder: (context, widget) {
         double value = 1.0;
         if (_pageController.position.haveDimensions) {
-          value = _pageController.page - index;
+          //value = _pageController.page - index;
           value = (1 - (value.abs() * 0.35) + 0.06).clamp(0.0, 1.0);
         }
         return Center(
@@ -209,7 +209,7 @@ class _NearByBanksState extends State<NearByBanks> {
     _controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: banks[_pageController.page.toInt()].locationCoords,
+          target: banks[_pageController.page?.toInt() as int].locationCoords,
           zoom: 14.0,
           bearing: 45.0,
           tilt: 45.0,

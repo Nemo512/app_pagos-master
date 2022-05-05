@@ -90,13 +90,13 @@ const TextStyle black16SemiBoldTextStyle = const TextStyle(
 
 const TextStyle black16BoldTextStyle = const TextStyle(
   fontSize: 16.0,
-  color: whiteColor,
+  color: blackColor,
   fontWeight: FontWeight.bold,
 );
 
 const TextStyle black18BoldTextStyle = const TextStyle(
   fontSize: 18.0,
-  color: orangeColor,
+  color: whiteColor,
   fontWeight: FontWeight.bold,
 );
 
@@ -131,7 +131,7 @@ const TextStyle white18MediumTextStyle = const TextStyle(
 
 const TextStyle white16BoldTextStyle = const TextStyle(
   fontSize: 16.0,
-  color: primaryColor,
+  color: whiteColor,
   fontWeight: FontWeight.bold,
 );
 const TextStyle red16BoldTextStyle = const TextStyle(
